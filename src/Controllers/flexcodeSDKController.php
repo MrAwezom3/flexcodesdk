@@ -30,7 +30,7 @@ class flexcodeSDKController extends Controller
     public function save(Request $request, $id)
     {
     	$result = flexcodesdk::register($id, $request->input('RegTemp'));
-        $response = Event::fire('fingerprints.register', array($result));
+        $response = Event::dispatch('fingerprints.register', array($result));
     }
 
     public function verify(Request $request, $id)
@@ -45,7 +45,7 @@ class flexcodeSDKController extends Controller
         // set action for this verification, default to login
         $result['extras'] = $request->all();
         // Let's tell laravel result of our verification
-        $response = Event::fire('fingerprints.verify', array($result));
+        $response = Event::dispatch('fingerprints.verify', array($result));
     }
 
 }

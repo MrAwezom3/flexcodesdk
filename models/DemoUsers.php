@@ -11,9 +11,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Pengguna extends Model
+class DemoUsers extends Model
 {
-    protected $table = 'users';
+    protected $table = 'demo_users';
 
     protected $guarded = [
     	'_token',

@@ -2,6 +2,7 @@
 
 namespace idekite\flexcodesdk;
 
+use App\DemoFinger;
 use Config;
 
 class flexcodesdk
@@ -64,7 +65,7 @@ class flexcodesdk
 
     public function register($id, $serialized_data)
     {
-        $user = \App\Pengguna::find($id);
+        $user = \App\DemoUsers::where('case_id', $id)->first();
 
         if ($user == NULL) {
             $result['message'] = 'User not found';
@@ -76,8 +77,11 @@ class flexcodesdk
                 $result['message'] = 'Error decoding fingerprint data';
                 return $result;
             }else{
-                $update['fingerprints'] = $data[3];
-                $user->update($update);
+                $save_fingerprint = new \App\DemoFinger;
+                $save_fingerprint->user_id = $id;
+                $save_fingerprint->finger_id = '1';
+                $save_fingerprint->finger_data = $data[3];
+                $save_fingerprint->save();
 
                 $result['message'] = 'Fingerprints successfully registered';
                 return $result;
@@ -98,7 +102,7 @@ class flexcodesdk
         $verified = false;
         $message = '';
         try{
-            $user = \App\Pengguna::findOrFail($id);
+            $user = \App\DemoFinger::where('case_id', $id)->firstOrFail();
         }
         catch(Exception $e){
             $message = 'User not found';
