@@ -53,7 +53,7 @@ class flexcodesdk
     public function isValidRegistration($user, $data)
     {
         
-        if(!empty($user->fingerprints) || $user->id !== $data['user_id']){
+        if(!empty($user->finger_data) || $user->user_id !== $data['user_id']){
             return false;
         }
         
@@ -94,7 +94,7 @@ class flexcodesdk
     public function verificationUrl($user, $extra = array())
     {
         $query_string = http_build_query($extra);
-        return $user->id . ";". $user->fingerprints.";SecurityKey;". '15' .";". url('fingerprints/verify/' . $user->id . '?' . $query_string) .";". url('fingerprints/ac');
+        return $user->user_id . ";". $user->finger_data.";SecurityKey;". '15' .";". url('fingerprints/verify/' . $user->user_id . '?' . $query_string) .";". url('fingerprints/ac');
     }
 
     public function verify($id, $serialized_data)
@@ -124,7 +124,7 @@ class flexcodesdk
             return $result;
         }
         
-        if($user->id != $user_id){
+        if($user->user_id != $user_id){
             $message =  'User mismatch';
             $result = array(
                 'verified' => $verified,
@@ -133,7 +133,7 @@ class flexcodesdk
             );
             return $result;
         }
-        if(empty($user->fingerprints)){
+        if(empty($user->finger_data)){
             $message =  'Fingerprints unregistered';
             $result = array(
                 'verified' => $verified,
@@ -143,7 +143,7 @@ class flexcodesdk
             return $result;
         }
         
-        $fingerData = $user->fingerprints;
+        $fingerData = $user->finger_data;
         $device     = flexcodesdk::getDeviceBySn($sn);
             
         $salt = md5($sn.$fingerData.$device['vc'].$time.$user_id.$device['vkey']);
