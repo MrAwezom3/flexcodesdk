@@ -78,7 +78,9 @@ class flexcodesdk
                 return $result;
             }else{
                 $fingerprint = DemoFinger::where('user_id', $id)->first();
-                $fingerprint->delete();
+                if($fingerprint){
+                    $fingerprint->delete();
+                }
                 $save_fingerprint = new \App\DemoFinger;
                 $save_fingerprint->user_id = $id;
                 $save_fingerprint->finger_id = '1';
