@@ -20,6 +20,10 @@ class flexcodesdk
 
     public function registerUrl($user_id)
     {
+        $fingerprint = DemoFinger::where('user_id', $user_id)->latest('created_at')->first();
+        if(!is_null($fingerprint)){
+            $fingerprint->delete();
+        }
         return  $user_id . ';SecurityKey;15;'.url('fingerprints/register/' . $user_id).';' . url('fingerprints/ac');
     }
 
@@ -27,8 +31,10 @@ class flexcodesdk
     {
         $devices = Config::get('flexcodesdk', 'devices');
         foreach ($devices as $device) {
-            if($device['sn'] === $sn){
-                return $device;
+            foreach($device as $devi){
+                if($devi['sn'] === $sn){
+                    return $devi;
+                }
             }
         }
         return false;
@@ -66,21 +72,25 @@ class flexcodesdk
     public function register($id, $serialized_data)
     {
         $user = \App\DemoUsers::where('case_id', $id)->first();
+        $fingerprint = DemoFinger::withTrashed()->where('user_id', $id)->latest('created_at')->first();
 
         if ($user == NULL) {
             $result['message'] = 'User not found';
+            if($fingerprint->deleted_at && !is_null($fingerprint)){
+                $fingerprint->deleted_at = null;
+                $fingerprint->save();
+            }
             return $result;
         }else{
             $data = explode(";", $serialized_data);
-
             if(empty($data[3])) {
+                if($fingerprint->deleted_at && !is_null($fingerprint)){
+                    $fingerprint->deleted_at = null;
+                    $fingerprint->save();
+                }
                 $result['message'] = 'Error decoding fingerprint data';
                 return $result;
             }else{
-                $fingerprint = DemoFinger::where('user_id', $id)->first();
-                if($fingerprint){
-                    $fingerprint->delete();
-                }
                 $save_fingerprint = new \App\DemoFinger;
                 $save_fingerprint->user_id = $id;
                 $save_fingerprint->finger_id = '1';
@@ -98,7 +108,7 @@ class flexcodesdk
     public function verificationUrl($user, $extra = array())
     {
         $query_string = http_build_query($extra);
-        return $user->user_id . ";". $user->finger_data.";SecurityKey;". '15' .";". url('fingerprints/verify/' . $user->user_id . '?' . $query_string) .";". url('fingerprints/ac');
+        return $user->user_id . ";". $user->finger_data.";SecurityKey;". '10' .";". url('fingerprints/verify/' . $user->user_id) .";". url('fingerprints/ac') . ";extraParams";
     }
 
     public function verify($id, $serialized_data)
@@ -106,7 +116,9 @@ class flexcodesdk
         $verified = false;
         $message = '';
         try{
-            $user = \App\DemoFinger::where('case_id', $id)->firstOrFail();
+            $user = \App\DemoFinger::where('user_id', $id)->firstOrFail();
+            $user->verify = true;
+            $user->save();
         }
         catch(Exception $e){
             $message = 'User not found';
@@ -170,6 +182,11 @@ class flexcodesdk
     public function getRegistrationLink($id)
     {
         return 'finspot:FingerspotReg;' . base64_encode(url('fingerprints/register/' . $id));
+    }
+
+    public function getVerificationLink($id)
+    {
+        return 'finspot:FingerspotVer;' . base64_encode(url('fingerprints/verify/' . $id));
     }
 
 }
