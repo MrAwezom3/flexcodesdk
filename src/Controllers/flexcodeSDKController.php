@@ -35,7 +35,7 @@ class flexcodeSDKController extends Controller
 
     public function verify(Request $request, $id)
     {
-    	$user = \App\User::findOrFail($id);
+    	$user = \App\DemoFinger::where('user_id', $id)->firstOrFail();
         echo flexcodesdk::verificationUrl($user, $request->all());
     }
 
@@ -46,6 +46,7 @@ class flexcodeSDKController extends Controller
         $result['extras'] = $request->all();
         // Let's tell laravel result of our verification
         $response = Event::dispatch('fingerprints.verify', array($result));
+        return $result;
     }
 
 }
