@@ -1,5 +1,5 @@
 {
-    "name": "MrAwezom3/flexcodesdk",
+    "name": "mr-awezom3/flexcodesdk",
     "description": ":description",
     "license": "MIT",
     "authors": [
@@ -9,7 +9,7 @@
             "homepage": "https://kata-kutuku.net"
         }
     ],
-    "homepage": "https://github.com/MrAwezom3/flexcodesdk",
+    "homepage": "https://github.com/mr-awezom3/flexcodesdk",
     "keywords": ["Laravel", "flexcodesdk"],
     "minimum-stability": "stable",
     "require": {
@@ -21,21 +21,21 @@
     },
     "autoload": {
         "psr-4": {
-            "MrAwezom3\\flexcodesdk\\": "src/"
+            "mr-awezom3\\flexcodesdk\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "MrAwezom3\\flexcodesdk\\Tests\\": "tests"
+            "mr-awezom3\\flexcodesdk\\Tests\\": "tests"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "MrAwezom3\\flexcodesdk\\flexcodesdkServiceProvider"
+                "mr-awezom3\\flexcodesdk\\flexcodesdkServiceProvider"
             ],
             "aliases": {
-                "flexcodesdk": "MrAwezom3\\flexcodesdk\\Facades\\flexcodesdk"
+                "flexcodesdk": "mr-awezom3\\flexcodesdk\\Facades\\flexcodesdk"
             }
         }
     }
