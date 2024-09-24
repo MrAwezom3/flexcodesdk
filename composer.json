@@ -1,5 +1,5 @@
 {
-    "name": "idekite/flexcodesdk",
+    "name": "MrAwezom3/flexcodesdk",
     "description": ":description",
     "license": "MIT",
     "authors": [
@@ -9,7 +9,7 @@
             "homepage": "https://kata-kutuku.net"
         }
     ],
-    "homepage": "https://github.com/idekite/flexcodesdk",
+    "homepage": "https://github.com/MrAwezom3/flexcodesdk",
     "keywords": ["Laravel", "flexcodesdk"],
     "minimum-stability": "stable",
     "require": {
@@ -21,21 +21,21 @@
     },
     "autoload": {
         "psr-4": {
-            "idekite\\flexcodesdk\\": "src/"
+            "MrAwezom3\\flexcodesdk\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "idekite\\flexcodesdk\\Tests\\": "tests"
+            "MrAwezom3\\flexcodesdk\\Tests\\": "tests"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "idekite\\flexcodesdk\\flexcodesdkServiceProvider"
+                "MrAwezom3\\flexcodesdk\\flexcodesdkServiceProvider"
             ],
             "aliases": {
-                "flexcodesdk": "idekite\\flexcodesdk\\Facades\\flexcodesdk"
+                "flexcodesdk": "MrAwezom3\\flexcodesdk\\Facades\\flexcodesdk"
             }
         }
     }
